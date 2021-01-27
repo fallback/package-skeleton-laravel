@@ -22,4 +22,15 @@ class SkeletonServiceProvider extends PackageServiceProvider
             ->hasMigration('create_skeleton_table')
             ->hasCommand(SkeletonCommand::class);
     }
+
+    public function bootingPackage(): void
+    {
+        $routesDirectory = __DIR__ . '/../routes';
+        foreach (new \DirectoryIterator($routesDirectory) as $fileinfo) {
+            if ($fileinfo->isFile())
+            {
+                $this->loadRoutesFrom($routesDirectory . '/' . $fileinfo->getFilename());
+            }
+        }
+    }
 }
